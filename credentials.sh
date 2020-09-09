@@ -1,5 +1,5 @@
 #!/bin/bash
-set +x
+set -x
 
 source conf_values.sh
 
@@ -17,4 +17,4 @@ export GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
 
 popd;
 
-set -x
+set +x
