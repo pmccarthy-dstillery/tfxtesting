@@ -4,16 +4,12 @@ set -x
 source conf_values.sh
 
 gcloud container clusters get-credentials $CLUSTER_NAME --zone=us-central1-a
+export ENDPOINT=$(kubectl describe configmap inverse-proxy-config | grep googleusercontent)
 
 pushd $HOME
 
-curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 
-chmod +x skaffold
 
-pip install -U pip --no-input
-pip install tfx kfp --use-feature=2020-resolver 
-
-export GOOGLE_CLOUD_PROJECT=$GOOGLE_CLOUD_PROJECT
+export PATH=$HOME:$PATH
 
 popd;
 
