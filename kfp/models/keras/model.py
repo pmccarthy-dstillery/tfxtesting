@@ -72,14 +72,21 @@ def _input_fn(file_pattern, num_steps, batch_size=200):
     
     return example['sparse'], example['label']
 
-  dataset = (
-        tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
-        .shuffle(buffer_size=5)
-        .take(num_steps)
-        .batch(batch_size)
-        .map(my_parser)
-    )
-    
+#  dataset = (
+#        tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
+#        .shuffle(buffer_size=5)
+#        .take(num_steps)
+#        .batch(batch_size)
+#        .map(my_parser)
+#    )
+
+  dataset = tf.data.experimental.make_batched_features_dataset(
+      file_pattern=file_pattern,
+      batch_size=batch_size,
+      features=features.FEATURE_SPEC,
+      reader=_gzip_reader_fn,
+      label_key='label')
+
   return dataset
 
 
