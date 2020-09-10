@@ -53,7 +53,7 @@ def _get_serve_tf_examples_fn(model, tf_transform_output=None):
   return serve_tf_examples_fn
 
 
-def _input_fn(file_pattern, batch_size=200):
+def _input_fn(file_pattern, num_steps, batch_size=200):
   """Generates features and label for tuning/training.
 
   Args:
@@ -74,9 +74,10 @@ def _input_fn(file_pattern, batch_size=200):
 
   dataset = (
         tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
+        .shuffle()
+        .take(num_steps)
         .batch(batch_size)
         .map(my_parser)
-        .repeat()
     )
     
   return dataset
@@ -120,9 +121,11 @@ def run_fn(fn_args):
   """
 
   train_dataset = _input_fn(fn_args.train_files, #fn_args.transform_output,
-                            constants.TRAIN_BATCH_SIZE)
+                            constants.TRAIN_BATCH_SIZE,
+                            fn_args.train_steps)
   eval_dataset = _input_fn(fn_args.eval_files, #fn_args.transform_output,
-                           constants.EVAL_BATCH_SIZE)
+                           constants.EVAL_BATCH_SIZE,
+                           fn_args.eval_steps)
 
   mirrored_strategy = tf.distribute.MirroredStrategy()
   with mirrored_strategy.scope():
@@ -136,9 +139,7 @@ def run_fn(fn_args):
 
   model.fit(
       train_dataset,
-      steps_per_epoch=fn_args.train_steps,
       validation_data=eval_dataset,
-      validation_steps=fn_args.eval_steps,
       callbacks=[tensorboard_callback])
 
   signatures = {
