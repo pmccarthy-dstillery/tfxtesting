@@ -74,7 +74,7 @@ def _input_fn(file_pattern, num_steps, batch_size=200):
 
   dataset = (
         tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
-        .shuffle()
+        .shuffle(buffer_size=5)
         .take(num_steps)
         .batch(batch_size)
         .map(my_parser)
