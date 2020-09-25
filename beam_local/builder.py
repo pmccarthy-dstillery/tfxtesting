@@ -111,6 +111,8 @@ def build_pipeline():
         pusher
     ]
 
+    conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/OL{653374}/{datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%m')}"
+
     tfx_pipeline = pipeline.Pipeline(
         pipeline_name=conf['pipeline_name'],
         pipeline_root=conf['pipeline_root_dir'],
