@@ -48,7 +48,7 @@ def bin2tfrecord(binfile,space=int(10e6)):
     Interpret a binary file and on the fly write it to a compressed tfrecord with the same name.
     """
 
-    tfrecord_file = f"{binfile}.tfrecord"
+    tfrecord_file = f"{binfile}.tfrecord.gz"
 
     tf_generator = bin_to_example_generator(binfile) 
 
