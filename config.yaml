@@ -1,1 +1,10 @@
-train_data :'gs://pjm-pipeline-train/OL653374/20200916'
+metadata_path: '/tmp/pjm_beam_pipeline/meta'
+pipeline_name: 'pjm_beam_pipeline'
+pipeline_root_dir: 'gs://pjm-pipeline-artifacts'
+trainer_module_file: ''
+runner_type: 'beam'
+serving_model_dir: 'gs://pjm-model-serving'
+
+trainer_module_file: 'pjm_trainer.py'
+train_args_steps: 32 
+train_data: 'gs://pjm-pipeline-train/OL653374/20200916'

@@ -1,7 +1,7 @@
 import os
 import yaml
 
-CONFIG_FILE = 'beam_local/config.yaml'
+CONFIG_FILE = 'config.yaml'
 
 def load():
     with open(CONFIG_FILE, 'r') as stream:

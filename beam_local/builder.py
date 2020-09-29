@@ -1,8 +1,8 @@
-import datetime
 import logging
 
 from beam_local import config
 
+import tensorflow as tf
 import tensorflow_model_analysis as tfma
 from tfx.components import (
     Evaluator,
@@ -27,12 +27,15 @@ from tfx.types.standard_artifacts import (Model, ModelBlessing)
 
 conf = config.load()
 
-def build_pipeline():
+def build_pipeline(timestamp: str) -> pipeline:
     """
     Gather tfx components and produce the output pipeline
     """
 
-    conf['serving_model_dir'] = f"{conf['serving_model_dir']}/OL{653374}/{datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%m')}"
+    conf['serving_model_dir'] = f"{conf['serving_model_dir']}/OL{653374}/{timestamp}"
+    conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/OL{653374}/{timestamp}"
+    conf['metadata_path'] = f"{conf['metadata_path']}/OL{653374}"
+
     logging.info("Serving model dir is now %s",conf['serving_model_dir'])
 
     example_gen = ImportExampleGen(input_base=conf['train_data'])
@@ -58,25 +61,44 @@ def build_pipeline():
         eval_args=trainer_pb2.EvalArgs(num_steps=50)
     )
 
+    metrics = [
+        tfma.metrics.ExampleCount(name='example_count'),
+        tfma.metrics.WeightedExampleCount(name='weighted_example_count'),
+        tf.keras.metrics.BinaryCrossentropy(name='binary_crossentropy'),
+        tf.keras.metrics.BinaryAccuracy(name='accuracy'),
+        tf.keras.metrics.AUC(name='auc', num_thresholds=10),
+        tf.keras.metrics.AUC(
+            name='auc_precision_recall', curve='PR', num_thresholds=100),
+        tf.keras.metrics.Precision(name='precision'),
+        tf.keras.metrics.Recall(name='recall'),
+        tfma.metrics.MeanLabel(name='mean_label'),
+        tfma.metrics.MeanPrediction(name='mean_prediction'),
+        tfma.metrics.Calibration(name='calibration'),
+        tfma.metrics.ConfusionMatrixPlot(name='confusion_matrix_plot'),
+        tfma.metrics.CalibrationPlot(name='calibration_plot')
+    ]
+    my_metrics_specs = tfma.metrics.specs_from_metrics(metrics)
 
     eval_config = tfma.EvalConfig(
         model_specs=[
             tfma.ModelSpec(label_key='label')
         ],
-        metrics_specs=[
-            tfma.MetricsSpec(
-                metrics=[
-                    # tfma.MetricConfig(class_name='ExampleCount'),
-                    tfma.MetricConfig(class_name='BinaryAccuracy',
-                      threshold=tfma.MetricThreshold(
-                          value_threshold=tfma.GenericValueThreshold(
-                              lower_bound={'value': 0.5}),
-                          change_threshold=tfma.GenericChangeThreshold(
-                              direction=tfma.MetricDirection.HIGHER_IS_BETTER,
-                              absolute={'value': -1e-10})))
-                ]
-            )
-        ],
+        metrics_specs=my_metrics_specs
+        # [
+            # tfma.MetricsSpec(
+                # metrics=[
+                #     # tfma.MetricConfig(class_name='ExampleCount'),
+                #     tfma.MetricConfig(class_name='BinaryAccuracy',
+                #       threshold=tfma.MetricThreshold(
+                #           value_threshold=tfma.GenericValueThreshold(
+                #               lower_bound={'value': 0.5}),
+                #           change_threshold=tfma.GenericChangeThreshold(
+                #               direction=tfma.MetricDirection.HIGHER_IS_BETTER,
+                #               absolute={'value': -1e-10})))
+                # ]
+            # )
+        # ],
+        ,
         slicing_specs=[
             tfma.SlicingSpec(),
         ])
@@ -111,7 +133,6 @@ def build_pipeline():
         pusher
     ]
 
-    conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/OL{653374}/{datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%m')}"
 
     tfx_pipeline = pipeline.Pipeline(
         pipeline_name=conf['pipeline_name'],
