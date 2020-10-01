@@ -21,7 +21,7 @@ parameters defined in constants.py.
 from __future__ import division
 from __future__ import print_function
 
-from models.pjm_trainer import (
+from models.keras.pjm_trainer import (
   _gzip_reader_fn,
   _get_serve_tf_examples_fn,
   _input_fn,

@@ -3,15 +3,14 @@ from tfx.components.trainer.executor import TrainerFnArgs
 
 import tensorflow as tf
 
-import glob
 import os
 
 
-MAX_IDX = 45431
+MAX_IDX = int(50.01e6) 
 
 FEATURE_SPEC = {'sparse': tf.io.SparseFeature(index_key='indices',
                                               value_key='values',
-                                              dtype=tf.int64,
+                                              dtype=tf.float32,
                                               size=MAX_IDX),
                 'label': tf.io.FixedLenFeature([], tf.int64, default_value=0)}
 
@@ -24,19 +23,24 @@ def _gzip_reader_fn(filenames):
 
 
 def _input_fn(file_pattern, batch_size):
-    print(file_pattern)
   
     def my_parser(x):
         example = tf.io.parse_example(x, FEATURE_SPEC)
         
         return example['sparse'], example['label']
 
-    dataset = (
-        tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
-        .batch(batch_size)
-        .map(my_parser)
-        .repeat()
-    )
+    # dataset = (
+    #     tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
+    #     .batch(batch_size)
+    #     .map(my_parser)
+    #     .repeat()
+    # )
+    dataset = tf.data.experimental.make_batched_features_dataset(
+        file_pattern=file_pattern,
+        batch_size=batch_size,
+        features=FEATURE_SPEC,
+        reader=_gzip_reader_fn,
+        label_key='label')
     
     return dataset
 
@@ -60,20 +64,22 @@ def _build_keras():
 
 def run_fn(fn_args: TrainerFnArgs):
 
-    BATCH_SIZE = 1024
+    BATCH_SIZE = 65536
     
     train_dataset = _input_fn(fn_args.train_files, BATCH_SIZE)
     eval_dataset = _input_fn(fn_args.eval_files, BATCH_SIZE)
 
     model = _build_keras()
     log_dir = os.path.join(os.path.dirname(fn_args.serving_model_dir), 'logs')
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(
-      log_dir=log_dir, update_freq='batch')
+    # tensorboard_callback = tf.keras.callbacks.TensorBoard(
+    #   log_dir=log_dir, update_freq='batch')
+
     model.fit(train_dataset,
              steps_per_epoch=fn_args.train_steps,
              validation_data=eval_dataset,
              validation_steps=fn_args.eval_steps,
-             callbacks=[tensorboard_callback])
+            #  callbacks=[tensorboard_callback])
+            callbacks=[])
         
     signatures = {
       'serving_default':
@@ -102,3 +108,6 @@ def _get_serve_tf_examples_fn(model, tf_transform_output=None):
     return model(parsed_features)
 
   return serve_tf_examples_fn   
+
+def foo():
+  print("foo")

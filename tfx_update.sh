@@ -1,4 +1,4 @@
-source conf_values.sh
+source ../conf_values.sh
 
 SKAFFOLD=./skaffold
 KUBE_CONFIG=$HOME/.kube/config
@@ -27,7 +27,6 @@ else
     gcloud container clusters get-credentials $CLUSTER_NAME --region=$ZONE
 fi
 
-tfx pipeline create \
+tfx pipeline update \
     --pipeline-path=kubeflow_dag_runner.py \
-    --endpoint=$ENDPOINT \
-    --build-target-image=$CUSTOM_TFX_IMAGE
+    --endpoint=$ENDPOINT 
