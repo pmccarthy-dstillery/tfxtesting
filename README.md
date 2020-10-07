@@ -7,6 +7,5 @@
 ## Cloud
  * partial dependency on `config.yaml` and full dependency on `pjm_trainer.py`
  * to run 
-   + update `conf_values.sh`
-   + cd into the `kfp_pipeline` dir
-   + `source ../conf_values.sh && ../tfx_create.sh`
+   + update `conf_values.sh` and `config.yaml`
+   + `source conf_values.sh && .tfx_create.sh`
