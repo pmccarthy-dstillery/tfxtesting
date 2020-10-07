@@ -20,29 +20,32 @@ from __future__ import division
 from __future__ import print_function
 
 import os
+import sys
 from absl import logging
 
-from pipeline import configs
+from pipeline import config, configs # suboptimal, need to rename one
 from pipeline import pipeline
 from tfx.orchestration.kubeflow import kubeflow_dag_runner
 from tfx.proto import trainer_pb2
 from tfx.utils import telemetry_utils
+conf = config.load()
 
 # TFX pipeline produces many output files and metadata. All output data will be
 # stored under this OUTPUT_DIR.
-OUTPUT_DIR = os.path.join('gs://', configs.GCS_BUCKET_NAME)
-
+# OUTPUT_DIR = os.path.join('gs://', configs.GCS_BUCKET_NAME)
+# OUTPUT_DIR = 
+# sys.exit()
 # TFX produces two types of outputs, files and metadata.
 # - Files will be created under PIPELINE_ROOT directory.
-PIPELINE_ROOT = os.path.join(OUTPUT_DIR, 'tfx_pipeline_output',
-                             configs.PIPELINE_NAME)
+# PIPELINE_ROOT = os.path.join(OUTPUT_DIR, 'tfx_pipeline_output',
+#                              configs.PIPELINE_NAME)
 
-print("PIPELINE_ROOT")
-print(PIPELINE_ROOT)                             
+# print("PIPELINE_ROOT")
+# print(PIPELINE_ROOT)                             
 
 # The last component of the pipeline, "Pusher" will produce serving model under
 # SERVING_MODEL_DIR.
-SERVING_MODEL_DIR = os.path.join(PIPELINE_ROOT, 'serving_model')
+# SERVING_MODEL_DIR = os.path.join(PIPELINE_ROOT, 'serving_model')
 
 # Specifies data file directory. DATA_PATH should be a directory containing CSV
 # files for CsvExampleGen in this example. By default, data files are in the
@@ -51,7 +54,7 @@ SERVING_MODEL_DIR = os.path.join(PIPELINE_ROOT, 'serving_model')
 #       Kubeflow), you can use a path starting "gs://YOUR_BUCKET_NAME/path" for
 #       DATA_PATH. For example,
 #       DATA_PATH = 'gs://bucket/chicago_taxi_trips/csv/'
-DATA_PATH='gs://pjm-pipeline-train/OL653374/20200916'
+# DATA_PATH='gs://pjm-pipeline-train/OL653374/20200916'
 
 
 def run():
@@ -72,16 +75,18 @@ def run():
   tfx_image = os.environ.get('KUBEFLOW_TFX_IMAGE', None)
 
   runner_config = kubeflow_dag_runner.KubeflowDagRunnerConfig(
-      kubeflow_metadata_config=metadata_config, tfx_image=tfx_image)
+      kubeflow_metadata_config=metadata_config, 
+      tfx_image=tfx_image)
   pod_labels = kubeflow_dag_runner.get_default_pod_labels().update(
       {telemetry_utils.LABEL_KFP_SDK_ENV: 'tfx-template'})
   kubeflow_dag_runner.KubeflowDagRunner(
-      config=runner_config, pod_labels_to_attach=pod_labels
+      config=runner_config, 
+      pod_labels_to_attach=pod_labels
   ).run(
       pipeline.create_pipeline(
-          pipeline_name=configs.PIPELINE_NAME,
-          pipeline_root=PIPELINE_ROOT,
-          data_path=DATA_PATH,
+          pipeline_name=conf['kfp']['pipeline_name'],
+          pipeline_root=conf['pipeline_root_dir'],
+          data_path=conf['train_data'],
           # TODO(step 7): (Optional) Uncomment below to use BigQueryExampleGen.
           # query=configs.BIG_QUERY_QUERY,
           preprocessing_fn=configs.PREPROCESSING_FN,
@@ -89,7 +94,7 @@ def run():
           train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
           eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
           eval_accuracy_threshold=configs.EVAL_ACCURACY_THRESHOLD,
-          serving_model_dir=SERVING_MODEL_DIR,
+          serving_model_dir=conf['serving_model_dir'],
           # TODO(step 7): (Optional) Uncomment below to use provide GCP related
           #               config for BigQuery with Beam DirectRunner.
           # beam_pipeline_args=configs

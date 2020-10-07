@@ -32,9 +32,9 @@ def build_pipeline(timestamp: str) -> pipeline:
     Gather tfx components and produce the output pipeline
     """
 
-    conf['serving_model_dir'] = f"{conf['serving_model_dir']}/OL{653374}/{timestamp}"
-    conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/OL{653374}/{timestamp}"
-    conf['metadata_path'] = f"{conf['metadata_path']}/OL{653374}"
+    conf['serving_model_dir'] = f"{conf['serving_model_dir']}/beam/OL{653374}/{timestamp}"
+    conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/beam/OL{653374}/{timestamp}"
+    conf['beam']['metadata_path'] = f"{conf['beam']['metadata_path']}/beam/OL{653374}"
 
     logging.info("Serving model dir is now %s",conf['serving_model_dir'])
 
@@ -135,12 +135,12 @@ def build_pipeline(timestamp: str) -> pipeline:
 
 
     tfx_pipeline = pipeline.Pipeline(
-        pipeline_name=conf['pipeline_name'],
+        pipeline_name=conf['beam']['pipeline_name'],
         pipeline_root=conf['pipeline_root_dir'],
         components=components,
         enable_cache=False,
         metadata_connection_config=(
-            metadata.sqlite_metadata_connection_config(conf['metadata_path'])
+            metadata.sqlite_metadata_connection_config(conf['beam']['metadata_path'])
 
         )
     )

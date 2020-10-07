@@ -21,7 +21,7 @@ import os  # pylint: disable=unused-import
 
 # Pipeline name will be used to identify this pipeline.
 #PIPELINE_NAME = 'pjm-pipeline-20200908b'
-PIPELINE_NAME = os.environ['PIPELINE_NAME']
+# PIPELINE_NAME = os.environ['PIPELINE_NAME']
 
 # GCP related configs.
 
@@ -42,7 +42,7 @@ except ImportError:
 # This bucket is created automatically when you deploy KFP from marketplace.
 #GCS_BUCKET_NAME = GOOGLE_CLOUD_PROJECT + '-kubeflowpipelines-default'
 #GCS_BUCKET_NAME = 'dst-pjm-pipeline-20200827' 
-GCS_BUCKET_NAME = os.environ['GCS_BUCKET_NAME']
+# GCS_BUCKET_NAME = os.environ['GCS_BUCKET_NAME']
 
 # TODO(step 8,step 9): (Optional) Set your region to use GCP services including
 #                      BigQuery, Dataflow and Cloud AI Platform.
