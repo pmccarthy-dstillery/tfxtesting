@@ -12,7 +12,8 @@ from tfx.components import (
     ResolverNode,
     SchemaGen,
     StatisticsGen,
-    Trainer
+    Trainer,
+    Transform
 )
 from tfx.components.base import executor_spec
 from tfx.components.trainer.executor import GenericExecutor
@@ -32,11 +33,11 @@ def build_pipeline(timestamp: str) -> pipeline:
     Gather tfx components and produce the output pipeline
     """
 
-    conf['serving_model_dir'] = f"{conf['serving_model_dir']}/beam/OL{653374}/{timestamp}"
-    conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/beam/OL{653374}/{timestamp}"
+    conf['beam']['serving_model_dir'] = f"{conf['beam']['serving_model_dir']}/beam/OL{653374}/{timestamp}"
+    conf['beam']['pipeline_root_dir'] = f"{conf['beam']['pipeline_root_dir']}/beam/OL{653374}/{timestamp}"
     conf['beam']['metadata_path'] = f"{conf['beam']['metadata_path']}/beam/OL{653374}"
 
-    logging.info("Serving model dir is now %s",conf['serving_model_dir'])
+    logging.info("Serving model dir is now %s",conf['beam']['serving_model_dir'])
 
     example_gen = ImportExampleGen(input_base=conf['train_data'])
 
@@ -47,13 +48,20 @@ def build_pipeline(timestamp: str) -> pipeline:
         infer_feature_shape=False
     )
     
+    transform = Transform(
+        examples=example_gen.outputs['examples'],
+        schema=schema_gen.outputs['schema'],
+        module_file=conf['trainer_module_file']
+    )
+
     example_validator = ExampleValidator(
         statistics=statistics_gen.outputs['statistics'],
         schema=schema_gen.outputs['schema']
     )
 
     trainer = Trainer(
-        examples=example_gen.outputs['examples'],
+        examples=transform.outputs['transformed_examples'],
+        transform_graph=transform.outputs['transform_graph'],
         schema=schema_gen.outputs['schema'],
         module_file=conf['trainer_module_file'],
         custom_executor_spec=executor_spec.ExecutorClassSpec(GenericExecutor), # define this to use run_fn instead of trainer_fn
@@ -120,12 +128,13 @@ def build_pipeline(timestamp: str) -> pipeline:
         model_blessing=evaluator.outputs['blessing'],
         push_destination=pusher_pb2.PushDestination(
             filesystem=pusher_pb2.PushDestination.Filesystem(
-                base_directory=conf['serving_model_dir'])))
+                base_directory=conf['beam']['serving_model_dir'])))
 
     components = [
         example_gen,
         statistics_gen,
         schema_gen,
+        transform,
         example_validator,
         trainer,
         model_resolver,
@@ -136,7 +145,7 @@ def build_pipeline(timestamp: str) -> pipeline:
 
     tfx_pipeline = pipeline.Pipeline(
         pipeline_name=conf['beam']['pipeline_name'],
-        pipeline_root=conf['pipeline_root_dir'],
+        pipeline_root=conf['beam']['pipeline_root_dir'],
         components=components,
         enable_cache=False,
         metadata_connection_config=(

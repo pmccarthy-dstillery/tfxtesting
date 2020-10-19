@@ -5,6 +5,7 @@ Write sgd++ sparse files into equivalent TFRecord files containing sparse featur
 outputs myfile.bin.tfrecord
 """
 
+import argparse
 import array
 import logging
 import numpy as np
@@ -42,38 +43,73 @@ def bin_to_example_generator(filepath):
             except EOFError as e:
                 break
 
+def line_limit(nlines: int):
 
-def bin2tfrecord(binfile,space=int(10e6)):
-    """
-    Interpret a binary file and on the fly write it to a compressed tfrecord with the same name.
-    """
+    if nlines == -1:
+        write_nlines = sys.maxsize
+    else:
+        write_nlines = nlines
 
-    tfrecord_file = f"{binfile}.tfrecord.gz"
+    def bin2tfrecord(binfile,space=int(10e6)):
+        """
+        Interpret a binary file and on the fly write it to a compressed tfrecord with the same name.
+        """
+        line_str = ''
+        if nlines != -1:
+            line_str = str(nlines)
 
-    tf_generator = bin_to_example_generator(binfile) 
+        tfrecord_file = f"{binfile}.{line_str}.tfrecord.gz"
 
-    logging.info("writing out %s...", tfrecord_file)
-    with tf.io.TFRecordWriter(tfrecord_file, options='GZIP') as f:
-        for record in tf_generator:
-            f.write(record.SerializeToString())
+        tf_generator = bin_to_example_generator(binfile) 
 
-    return tfrecord_file
+        logging.info("writing out %s...", tfrecord_file)
+        with tf.io.TFRecordWriter(tfrecord_file, options='GZIP') as f:
+            for i, record in enumerate(tf_generator):
+
+                if i < write_nlines:
+                    f.write(record.SerializeToString())
+                else: 
+                    break
+
+            logging.info("%s lines written", i)
+        return tfrecord_file
+
+    return bin2tfrecord
 
 
 if __name__ == "__main__":
 
     logging.basicConfig(level=logging.INFO)
-    input_files = sys.argv[1:]
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-l",
+        "--lines",
+        default=-1,
+        type=int
+    )
+    parser.add_argument(
+        "-i",
+        "--infiles",
+        nargs="*",
+        required=True
+    )
+
+    args = vars(parser.parse_args())
+    print(args)
+    # sys.exit()
+
 
     ## Test that every member of the inputs is a valid file
     try:
-        assert all(map(os.path.exists,sys.argv[1:])),"One or more input paths not valid"
+        assert all(map(os.path.exists,args['infiles'])),"One or more input paths not valid"
     except AssertionError as e:
         logging.error("One or more input files not found")
-        logging.error([x for x in zip(input_files, map(os.path.exists, input_files))])
+        logging.error([x for x in zip(args['infiles'], map(os.path.exists, args['infiles']))])
 
+    binarizer = line_limit(args['lines'])
     ## map a conversion function across inputs
-    tf_record_files = map(bin2tfrecord, input_files)
+    tf_record_files = map(binarizer, args['infiles'])
 
     logging.info("Following files are written out: %s",",".join([x for x in tf_record_files]))
 
