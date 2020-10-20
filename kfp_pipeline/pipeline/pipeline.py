@@ -55,8 +55,9 @@ def create_pipeline(
     data_path: Text,
     # TODO(step 7): (Optional) Uncomment here to use BigQuery as a data source.
     # query: Text,
-    preprocessing_fn: Text,
-    run_fn: Text,
+    # preprocessing_fn: Text,
+    # run_fn: Text,
+    module_file: Text,
     train_args: trainer_pb2.TrainArgs,
     eval_args: trainer_pb2.EvalArgs,
     eval_accuracy_threshold: float,
@@ -94,24 +95,24 @@ def create_pipeline(
   example_validator = ExampleValidator(  # pylint: disable=unused-variable
       statistics=statistics_gen.outputs['statistics'],
       schema=schema_gen.outputs['schema'])
-  # TODO(step 5): Uncomment here to add ExampleValidator to the pipeline.
+  
   components.append(example_validator)
 
   # Performs transformations and feature engineering in training and serving.
-#  transform = Transform(
-#      examples=example_gen.outputs['examples'],
-#      schema=schema_gen.outputs['schema'],
-#      preprocessing_fn=preprocessing_fn)
-  # TODO(step 6): Uncomment here to add Transform to the pipeline.
-  # components.append(transform)
+  transform = Transform(
+     examples=example_gen.outputs['examples'],
+     schema=schema_gen.outputs['schema'],
+     module_file=module_file)
+  
+  components.append(transform)
 
   # Uses user-provided Python function that implements a model using TF-Learn.
   trainer_args = {
-      'run_fn': run_fn,
-      'examples': example_gen.outputs['examples'],
-#      'transformed_examples': transform.outputs['transformed_examples'],
+      'module_file': module_file,
+    #   'examples': example_gen.outputs['examples'],
+     'transformed_examples': transform.outputs['transformed_examples'],
       'schema': schema_gen.outputs['schema'],
-#      'transform_graph': transform.outputs['transform_graph'],
+     'transform_graph': transform.outputs['transform_graph'],
       'train_args': train_args,
       'eval_args': eval_args,
       'custom_executor_spec':

@@ -48,7 +48,7 @@ except ImportError:
 #                      BigQuery, Dataflow and Cloud AI Platform.
 # GOOGLE_CLOUD_REGION = ''  # ex) 'us-central1'
 
-PREPROCESSING_FN = 'models.preprocessing.preprocessing_fn'
+PREPROCESSING_FN = 'models.keras.model.preprocessing_fn'
 RUN_FN = 'models.keras.model.run_fn'
 # NOTE: Uncomment below to use an estimator based model.
 # RUN_FN = 'models.estimator.model.run_fn'

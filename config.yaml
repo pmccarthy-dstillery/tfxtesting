@@ -4,13 +4,16 @@ serving_model_dir: 'gs://pjm-model-serving'
 trainer_module_file: 'pjm_trainer.py'
 train_args_steps: 32 
 train_data: 'gs://pjm-pipeline-train/OL653374/20200916'
+# train_data: '/tmp/smalldata/'
 
 beam:
   metadata_path: '/tmp/pjm_beam_pipeline/meta'
   pipeline_name: 'pjm_beam_pipeline_OL653374'
+  pipeline_root_dir: '/tmp/pjm_beam_pipeline_root'
+  serving_model_dir: '/tmp/pjm_beam_pipeline_serving'
 
 kfp:
   cluster_name: 'cluster-5'
   google_cloud_project: 'dst-mlpipes'
-  pipeline_name: 'pjm_pipeline_OL653374'
+  pipeline_name: 'pjm_kfp_pipeline_OL653374'
   zone: 'us-central1-a'

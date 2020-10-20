@@ -19,6 +19,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import datetime
 import os
 import sys
 from absl import logging
@@ -56,6 +57,10 @@ conf = config.load()
 #       DATA_PATH = 'gs://bucket/chicago_taxi_trips/csv/'
 # DATA_PATH='gs://pjm-pipeline-train/OL653374/20200916'
 
+timestamp = datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%m')
+
+conf['serving_model_dir'] = f"{conf['serving_model_dir']}/{conf['kfp']['pipeline_name']}/{timestamp}"
+conf['pipeline_root_dir'] = f"{conf['pipeline_root_dir']}/{conf['kfp']['pipeline_name']}/{timestamp}"
 
 def run():
   """Define a kubeflow pipeline."""
@@ -89,8 +94,9 @@ def run():
           data_path=conf['train_data'],
           # TODO(step 7): (Optional) Uncomment below to use BigQueryExampleGen.
           # query=configs.BIG_QUERY_QUERY,
-          preprocessing_fn=configs.PREPROCESSING_FN,
-          run_fn=configs.RUN_FN,
+          module_file='pjm_trainer.py',
+        #   preprocessing_fn=configs.PREPROCESSING_FN,
+        #   run_fn=configs.RUN_FN,
           train_args=trainer_pb2.TrainArgs(num_steps=configs.TRAIN_NUM_STEPS),
           eval_args=trainer_pb2.EvalArgs(num_steps=configs.EVAL_NUM_STEPS),
           eval_accuracy_threshold=configs.EVAL_ACCURACY_THRESHOLD,

@@ -43,11 +43,9 @@ if [ -f "Dockerfile" ]; then
 fi
 
 CUSTOM_TFX_IMAGE="gcr.io/${GOOGLE_CLOUD_PROJECT}/${PIPELINE_NAME}"
-
 tfx pipeline create \
     --pipeline-path=kubeflow_dag_runner.py \
     --endpoint=$ENDPOINT \
     --build-target-image=$CUSTOM_TFX_IMAGE
-
 popd
 set +x
