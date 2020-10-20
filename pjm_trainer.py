@@ -2,18 +2,14 @@
 from tfx.components.trainer.executor import TrainerFnArgs
 
 import tensorflow as tf
+import tensorflow_transform as tft
+import typing
 
 import os
 
 
-MAX_IDX = int(50.01e6) 
-
-FEATURE_SPEC = {'sparse': tf.io.SparseFeature(index_key='indices',
-                                              value_key='values',
-                                              dtype=tf.float32,
-                                              size=MAX_IDX),
-                'label': tf.io.FixedLenFeature([], tf.int64, default_value=0)}
-
+SGD_MAX_IDX = int(50.01e6) 
+MAX_IDX = 40*1000
 
 def _gzip_reader_fn(filenames):
   """Small utility returning a record reader that can read gzip'ed files."""
@@ -22,37 +18,70 @@ def _gzip_reader_fn(filenames):
       compression_type='GZIP')
 
 
-def _input_fn(file_pattern, batch_size):
-  
-    def my_parser(x):
-        example = tf.io.parse_example(x, FEATURE_SPEC)
-        
-        return example['sparse'], example['label']
+def _input_fn(file_pattern: typing.List[typing.Text],
+              tf_transform_output: tft.TFTransformOutput,
+              batch_size: int) -> tf.data.Dataset:
 
-    # dataset = (
-    #     tf.data.TFRecordDataset(glob.glob(file_pattern[0]), compression_type='GZIP')
-    #     .batch(batch_size)
-    #     .map(my_parser)
-    #     .repeat()
-    # )
+    transformed_feature_spec = (tf_transform_output.transformed_feature_spec().copy())
+
     dataset = tf.data.experimental.make_batched_features_dataset(
         file_pattern=file_pattern,
         batch_size=batch_size,
-        features=FEATURE_SPEC,
+        features=transformed_feature_spec,
         reader=_gzip_reader_fn,
         label_key='label')
     
     return dataset
 
 
+def preprocessing_fn(inputs):
+  """
+  Perform feature reduction via `compute_and_apply_vocabulary`. An
+  `indices` tensor should come in with values in (0,5e7) and should
+  be transformed to (0,40000).
+  """
+
+  outputs = inputs
+
+  outputs['indices'] = (
+    tft.compute_and_apply_vocabulary(x=inputs['indices'],
+                                     top_k=(MAX_IDX-5),
+                                     num_oov_buckets=5,
+                                     vocab_filename='my_vocab')
+  )
+  
+  return outputs
+
+
+class SparseConstructorLayer(tf.keras.layers.Layer):
+    
+    def __init__(self, n):
+        self.n = n
+        super(SparseConstructorLayer, self).__init__()
+        
+    def call(self, inputs):
+        row_inds = inputs.indices[:,0]
+        col_inds = tf.cast(inputs.values, tf.int64)
+        
+        indices = tf.transpose(tf.stack([row_inds, col_inds]))
+        values = tf.ones(tf.shape(inputs.values))
+        dense_shape = [tf.shape(inputs)[0], tf.cast(self.n, tf.int64)]
+        
+        return tf.SparseTensor(indices=indices, values=values, dense_shape=dense_shape)
+        
+    def get_config(self):
+        return {'n': self.n}
+
+
 def _build_keras():    
 
-    FULL_DIM = MAX_IDX
-    input_layer = tf.keras.layers.Input(FULL_DIM, sparse=True, name='sparse')
+    input_layer = tf.keras.layers.Input(MAX_IDX, sparse=True, name='indices')
+  
+    sparsed_input = SparseConstructorLayer(MAX_IDX)(input_layer)
 
     lin_fn = tf.keras.layers.Dense(1, 
                    activation='sigmoid', 
-                   kernel_regularizer=tf.keras.regularizers.l2(0.1))(input_layer)
+                   kernel_regularizer=tf.keras.regularizers.l2(0.1))(sparsed_input)
     
     reg_model = tf.keras.Model(inputs = input_layer,
                                outputs = lin_fn)
@@ -65,11 +94,15 @@ def _build_keras():
 def run_fn(fn_args: TrainerFnArgs):
 
     BATCH_SIZE = 65536
-    
-    train_dataset = _input_fn(fn_args.train_files, BATCH_SIZE)
-    eval_dataset = _input_fn(fn_args.eval_files, BATCH_SIZE)
 
-    model = _build_keras()
+    tf_transform_output = tft.TFTransformOutput(fn_args.transform_output)
+    
+    train_dataset = _input_fn(fn_args.train_files, tf_transform_output, BATCH_SIZE)
+    eval_dataset = _input_fn(fn_args.eval_files, tf_transform_output, BATCH_SIZE)
+  
+    mirrored_strategy = tf.distribute.MirroredStrategy()
+    with mirrored_strategy.scope():
+      model = _build_keras()
     log_dir = os.path.join(os.path.dirname(fn_args.serving_model_dir), 'logs')
     tensorboard_callback = tf.keras.callbacks.TensorBoard(
       log_dir=log_dir, update_freq='batch')
@@ -84,7 +117,7 @@ def run_fn(fn_args: TrainerFnArgs):
     signatures = {
       'serving_default':
           _get_serve_tf_examples_fn(model,
-                                    None).get_concrete_function(
+                                    tf_transform_output).get_concrete_function(
                                         tf.TensorSpec(
                                             shape=[None],
                                             dtype=tf.string,
@@ -93,18 +126,22 @@ def run_fn(fn_args: TrainerFnArgs):
     model.save(fn_args.serving_model_dir, save_format='tf', signatures=signatures)
 
 
-def _get_serve_tf_examples_fn(model, tf_transform_output=None):
+def _get_serve_tf_examples_fn(model, tf_transform_output):
   """Returns a function that parses a serialized tf.Example and applies TFT."""
 
-#   model.tft_layer = tf_transform_output.transform_features_layer()
+  model.tft_layer = tf_transform_output.transform_features_layer()
 
   @tf.function
   def serve_tf_examples_fn(serialized_tf_examples):
     """Returns the output to be used in the serving signature."""
-    feature_spec = FEATURE_SPEC
+    # feature_spec = FEATURE_SPEC
+    feature_spec = tf_transform_output.raw_feature_spec()
     feature_spec.pop('label')
+    # feature_spec.pop(base.LABEL_KEY)
     parsed_features = tf.io.parse_example(serialized_tf_examples, feature_spec)
+    transformed_features = model.tft_layer(parsed_features)
+    # transformed_features.pop('label')
     
-    return model(parsed_features)
+    return model(transformed_features)
 
   return serve_tf_examples_fn   

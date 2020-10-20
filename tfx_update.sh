@@ -1,3 +1,5 @@
+set -x
+pushd kfp_pipeline
 source ../conf_values.sh
 
 SKAFFOLD=./skaffold
@@ -30,3 +32,5 @@ fi
 tfx pipeline update \
     --pipeline-path=kubeflow_dag_runner.py \
     --endpoint=$ENDPOINT 
+popd
+set +x
