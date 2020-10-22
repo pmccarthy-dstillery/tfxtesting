@@ -147,7 +147,7 @@ def build_pipeline(timestamp: str) -> pipeline:
         pipeline_name=conf['beam']['pipeline_name'],
         pipeline_root=conf['beam']['pipeline_root_dir'],
         components=components,
-        enable_cache=False,
+        enable_cache=True,
         metadata_connection_config=(
             metadata.sqlite_metadata_connection_config(conf['beam']['metadata_path'])
 

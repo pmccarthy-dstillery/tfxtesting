@@ -24,12 +24,13 @@ def _input_fn(file_pattern: typing.List[typing.Text],
 
     transformed_feature_spec = (tf_transform_output.transformed_feature_spec().copy())
 
-    dataset = tf.data.experimental.make_batched_features_dataset(
+    dataset = (tf.data.experimental.make_batched_features_dataset(
         file_pattern=file_pattern,
         batch_size=batch_size,
         features=transformed_feature_spec,
         reader=_gzip_reader_fn,
         label_key='label')
+        )
     
     return dataset
 
@@ -41,7 +42,9 @@ def preprocessing_fn(inputs):
   be transformed to (0,40000).
   """
 
-  outputs = inputs
+  outputs = {} 
+
+  outputs['label'] = inputs['label']
 
   outputs['indices'] = (
     tft.compute_and_apply_vocabulary(x=inputs['indices'],
@@ -59,6 +62,7 @@ class SparseConstructorLayer(tf.keras.layers.Layer):
         self.n = n
         super(SparseConstructorLayer, self).__init__()
         
+
     def call(self, inputs):
         row_inds = inputs.indices[:,0]
         col_inds = tf.cast(inputs.values, tf.int64)
@@ -69,23 +73,30 @@ class SparseConstructorLayer(tf.keras.layers.Layer):
         
         return tf.SparseTensor(indices=indices, values=values, dense_shape=dense_shape)
         
+
     def get_config(self):
         return {'n': self.n}
 
 
-def _build_keras():    
+def _build_keras():   
 
-    input_layer = tf.keras.layers.Input(MAX_IDX, sparse=True, name='indices')
+    BATCH_SIZE=1024
+
+    input_layer = tf.keras.layers.Input(shape=MAX_IDX, batch_size=BATCH_SIZE, sparse=True, name='indices')
   
     sparsed_input = SparseConstructorLayer(MAX_IDX)(input_layer)
 
     lin_fn = tf.keras.layers.Dense(1, 
                    activation='sigmoid', 
-                   kernel_regularizer=tf.keras.regularizers.l2(0.1))(sparsed_input)
+                   kernel_regularizer=tf.keras.regularizers.l2())(sparsed_input)
     
     reg_model = tf.keras.Model(inputs = input_layer,
                                outputs = lin_fn)
-    reg_model.compile()
+    reg_model.compile(
+      optimizer=tf.keras.optimizers.Adam(learning_rate=0.1),
+      loss='binary_crossentropy',
+      metrics=[tf.keras.metrics.AUC()]
+    )
     reg_model.summary()    
     
     return reg_model
@@ -93,7 +104,7 @@ def _build_keras():
 
 def run_fn(fn_args: TrainerFnArgs):
 
-    BATCH_SIZE = 65536
+    BATCH_SIZE = 1024
 
     tf_transform_output = tft.TFTransformOutput(fn_args.transform_output)
     
