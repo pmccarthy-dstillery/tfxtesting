@@ -1,0 +1,582 @@
+2020-10-30 18:06:47.768654: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:06:47.768744: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+WARNING:absl:RuntimeParameter is only supported on Cloud-based DAG runner currently.
+INFO:absl:Excluding no splits because exclude_splits is not set.
+INFO:absl:Excluding no splits because exclude_splits is not set.
+INFO:absl:Excluding no splits because exclude_splits is not set.
+INFO:absl:Component CsvExampleGen depends on [].
+INFO:absl:Component CsvExampleGen is scheduled.
+INFO:absl:Component StatisticsGen depends on ['Run[CsvExampleGen]'].
+INFO:absl:Component StatisticsGen is scheduled.
+INFO:absl:Component SchemaGen depends on ['Run[StatisticsGen]'].
+INFO:absl:Component SchemaGen is scheduled.
+INFO:absl:Component ExampleValidator depends on ['Run[StatisticsGen]', 'Run[SchemaGen]'].
+INFO:absl:Component ExampleValidator is scheduled.
+INFO:absl:Component Trainer depends on ['Run[CsvExampleGen]', 'Run[SchemaGen]'].
+INFO:absl:Component Trainer is scheduled.
+INFO:absl:Component Pusher depends on ['Run[Trainer]'].
+INFO:absl:Component Pusher is scheduled.
+INFO:absl:Component CsvExampleGen is running.
+INFO:absl:Running driver for CsvExampleGen
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:select span and version = (0, None)
+INFO:absl:latest span and version = (0, None)
+INFO:absl:Running executor for CsvExampleGen
+INFO:absl:Attempting to infer TFX Python dependency for beam
+INFO:absl:Copying all content from install dir /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tfx to temp dir /tmp/tmpw34ldbjs/build/tfx
+INFO:absl:Generating a temp setup file at /tmp/tmpw34ldbjs/build/tfx/setup.py
+INFO:absl:Creating temporary sdist package, logs available at /tmp/tmpw34ldbjs/build/tfx/setup.log
+INFO:absl:Added --extra_package=/tmp/tmpw34ldbjs/build/tfx/dist/tfx_ephemeral-0.25.0.dev20201028.tar.gz to beam args
+INFO:absl:Generating examples.
+INFO:absl:Processing input csv data /home/pmccarthy/iris/data/* to TFExample.
+2020-10-30 18:06:54.541951: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:06:54.541950: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:06:54.542072: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:06:54.542125: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:06:54.555759: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:06:54.555949: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:06:54.590152: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:06:54.590237: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+INFO:absl:Examples generated.
+INFO:absl:Running publisher for CsvExampleGen
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Component CsvExampleGen is finished.
+INFO:absl:Component StatisticsGen is running.
+INFO:absl:Running driver for StatisticsGen
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Running executor for StatisticsGen
+INFO:absl:Attempting to infer TFX Python dependency for beam
+INFO:absl:Copying all content from install dir /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tfx to temp dir /tmp/tmp8yw18u9g/build/tfx
+INFO:absl:Generating a temp setup file at /tmp/tmp8yw18u9g/build/tfx/setup.py
+INFO:absl:Creating temporary sdist package, logs available at /tmp/tmp8yw18u9g/build/tfx/setup.log
+INFO:absl:Added --extra_package=/tmp/tmp8yw18u9g/build/tfx/dist/tfx_ephemeral-0.25.0.dev20201028.tar.gz to beam args
+INFO:absl:Generating statistics for split train.
+INFO:absl:Statistics for split train written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/StatisticsGen/statistics/119/train.
+INFO:absl:Generating statistics for split eval.
+INFO:absl:Statistics for split eval written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/StatisticsGen/statistics/119/eval.
+2020-10-30 18:07:07.176630: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:07.176755: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:07:07.176631: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:07.176884: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:07:07.176650: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:07.176983: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:07:07.176652: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcudart.so.10.1'; dlerror: libcudart.so.10.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:07.177711: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-10-30 18:07:10.471563: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:10.471655: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-10-30 18:07:10.471713: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (pjm1021): /proc/driver/nvidia/version does not exist
+2020-10-30 18:07:10.472103: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-10-30 18:07:10.492787: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-10-30 18:07:10.493188: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f4e3b90e320 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-10-30 18:07:10.493239: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-10-30 18:07:10.495435: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:10.495513: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-10-30 18:07:10.495587: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (pjm1021): /proc/driver/nvidia/version does not exist
+2020-10-30 18:07:10.496006: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-10-30 18:07:10.507550: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-10-30 18:07:10.507878: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fe41390fd60 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-10-30 18:07:10.507933: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-10-30 18:07:10.570063: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:10.570161: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-10-30 18:07:10.570228: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (pjm1021): /proc/driver/nvidia/version does not exist
+2020-10-30 18:07:10.570660: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-10-30 18:07:10.582054: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-10-30 18:07:10.582420: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fbe6390e460 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-10-30 18:07:10.582469: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-10-30 18:07:10.620091: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:10.620178: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-10-30 18:07:10.620238: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (pjm1021): /proc/driver/nvidia/version does not exist
+2020-10-30 18:07:10.620837: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-10-30 18:07:10.636965: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-10-30 18:07:10.637368: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fa76393ae30 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-10-30 18:07:10.637451: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+INFO:absl:Running publisher for StatisticsGen
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Component StatisticsGen is finished.
+INFO:absl:Component SchemaGen is running.
+INFO:absl:Running driver for SchemaGen
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Running executor for SchemaGen
+INFO:absl:Attempting to infer TFX Python dependency for beam
+INFO:absl:Copying all content from install dir /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tfx to temp dir /tmp/tmpq0jafjq0/build/tfx
+INFO:absl:Generating a temp setup file at /tmp/tmpq0jafjq0/build/tfx/setup.py
+INFO:absl:Creating temporary sdist package, logs available at /tmp/tmpq0jafjq0/build/tfx/setup.log
+INFO:absl:Added --extra_package=/tmp/tmpq0jafjq0/build/tfx/dist/tfx_ephemeral-0.25.0.dev20201028.tar.gz to beam args
+INFO:absl:Processing schema from statistics for split train.
+WARNING:tensorflow:From /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tensorflow_data_validation/utils/stats_util.py:247: tf_record_iterator (from tensorflow.python.lib.io.tf_record) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use eager execution and: 
+`tf.data.TFRecordDataset(path)`
+INFO:absl:Processing schema from statistics for split eval.
+INFO:absl:Schema written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/SchemaGen/schema/120/schema.pbtxt.
+INFO:absl:Running publisher for SchemaGen
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Component SchemaGen is finished.
+INFO:absl:Component Trainer is running.
+INFO:absl:Running driver for Trainer
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Running executor for Trainer
+INFO:absl:Attempting to infer TFX Python dependency for beam
+INFO:absl:Copying all content from install dir /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tfx to temp dir /tmp/tmphwi1vkqn/build/tfx
+INFO:absl:Generating a temp setup file at /tmp/tmphwi1vkqn/build/tfx/setup.py
+INFO:absl:Creating temporary sdist package, logs available at /tmp/tmphwi1vkqn/build/tfx/setup.log
+INFO:absl:Added --extra_package=/tmp/tmphwi1vkqn/build/tfx/dist/tfx_ephemeral-0.25.0.dev20201028.tar.gz to beam args
+INFO:absl:Train on the 'train' split when train_args.splits is not set.
+INFO:absl:Evaluate on the 'eval' split when eval_args.splits is not set.
+INFO:absl:Training model.
+WARNING:absl:printme, man
+printme, man
+2020-10-30 18:07:18.161831: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:/usr/local/nccl2/lib:/usr/local/cuda/extras/CUPTI/lib64
+2020-10-30 18:07:18.161890: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-10-30 18:07:18.161928: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (pjm1021): /proc/driver/nvidia/version does not exist
+2020-10-30 18:07:18.162507: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-10-30 18:07:18.173592: I tensorflow/core/platform/profile_utils/cpu_utils.cc:104] CPU Frequency: 2300000000 Hz
+2020-10-30 18:07:18.174007: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55e94b755250 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-10-30 18:07:18.174073: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+printme, man
+Iteration 1, loss = 1.18863300
+Iteration 2, loss = 1.16858704
+Iteration 3, loss = 1.14993807
+Iteration 4, loss = 1.13504370
+Iteration 5, loss = 1.12496435
+Iteration 6, loss = 1.11634776
+Iteration 7, loss = 1.10972610
+Iteration 8, loss = 1.10418948
+Iteration 9, loss = 1.10062158
+Iteration 10, loss = 1.09704412
+Iteration 11, loss = 1.09364355
+Iteration 12, loss = 1.09085745
+Iteration 13, loss = 1.08805170
+Iteration 14, loss = 1.08493295
+Iteration 15, loss = 1.08196581
+Iteration 16, loss = 1.07934323
+Iteration 17, loss = 1.07593414
+Iteration 18, loss = 1.07283871
+Iteration 19, loss = 1.06970156
+Iteration 20, loss = 1.06668768
+Iteration 21, loss = 1.06350829
+Iteration 22, loss = 1.06045398
+Iteration 23, loss = 1.05720656
+Iteration 24, loss = 1.05399047
+Iteration 25, loss = 1.05093852
+Iteration 26, loss = 1.04763721
+Iteration 27, loss = 1.04381071
+Iteration 28, loss = 1.04036985
+Iteration 29, loss = 1.03697670
+Iteration 30, loss = 1.03312873
+Iteration 31, loss = 1.02927512
+Iteration 32, loss = 1.02550790
+Iteration 33, loss = 1.02173854
+Iteration 34, loss = 1.01789283
+Iteration 35, loss = 1.01404076
+Iteration 36, loss = 1.01019029
+Iteration 37, loss = 1.00602140
+Iteration 38, loss = 1.00185161
+Iteration 39, loss = 0.99803949
+Iteration 40, loss = 0.99331577
+Iteration 41, loss = 0.98887545
+Iteration 42, loss = 0.98440371
+Iteration 43, loss = 0.97979561
+Iteration 44, loss = 0.97326310
+Iteration 45, loss = 0.96538949
+Iteration 46, loss = 0.95723188
+Iteration 47, loss = 0.94935601
+Iteration 48, loss = 0.94272809
+Iteration 49, loss = 0.93711396
+Iteration 50, loss = 0.93099868
+Iteration 51, loss = 0.92510358
+Iteration 52, loss = 0.91896900
+Iteration 53, loss = 0.91340851
+Iteration 54, loss = 0.90798134
+Iteration 55, loss = 0.90166718
+Iteration 56, loss = 0.89619611
+Iteration 57, loss = 0.89064764
+Iteration 58, loss = 0.88516255
+Iteration 59, loss = 0.87993492
+Iteration 60, loss = 0.87440035
+Iteration 61, loss = 0.86909276
+Iteration 62, loss = 0.86344235
+Iteration 63, loss = 0.85817998
+Iteration 64, loss = 0.85264334
+Iteration 65, loss = 0.84754723
+Iteration 66, loss = 0.84229397
+Iteration 67, loss = 0.83724177
+Iteration 68, loss = 0.83195197
+Iteration 69, loss = 0.82674758
+Iteration 70, loss = 0.82141915
+Iteration 71, loss = 0.81652032
+Iteration 72, loss = 0.81133887
+Iteration 73, loss = 0.80639605
+Iteration 74, loss = 0.80151959
+Iteration 75, loss = 0.79630226
+Iteration 76, loss = 0.79149701
+Iteration 77, loss = 0.78661412
+Iteration 78, loss = 0.78181133
+Iteration 79, loss = 0.77719786
+Iteration 80, loss = 0.77280285
+Iteration 81, loss = 0.76814033
+Iteration 82, loss = 0.76389512
+Iteration 83, loss = 0.75982043
+Iteration 84, loss = 0.75574029
+Iteration 85, loss = 0.75145151
+Iteration 86, loss = 0.74763302
+Iteration 87, loss = 0.74350151
+Iteration 88, loss = 0.73955903
+Iteration 89, loss = 0.73564808
+Iteration 90, loss = 0.73145537
+Iteration 91, loss = 0.72715446
+Iteration 92, loss = 0.72267379
+Iteration 93, loss = 0.71754427
+Iteration 94, loss = 0.71186151
+Iteration 95, loss = 0.70544997
+Iteration 96, loss = 0.69834434
+Iteration 97, loss = 0.69125079
+Iteration 98, loss = 0.68432959
+Iteration 99, loss = 0.67761187
+Iteration 100, loss = 0.67128552
+Iteration 101, loss = 0.66555857
+Iteration 102, loss = 0.65980674
+Iteration 103, loss = 0.65453456
+Iteration 104, loss = 0.64953364
+Iteration 105, loss = 0.64446929
+Iteration 106, loss = 0.63960764
+Iteration 107, loss = 0.63517184
+Iteration 108, loss = 0.63072819
+Iteration 109, loss = 0.62645701
+Iteration 110, loss = 0.62248836
+Iteration 111, loss = 0.61851604
+Iteration 112, loss = 0.61455634
+Iteration 113, loss = 0.61084663
+Iteration 114, loss = 0.60719061
+Iteration 115, loss = 0.60370536
+Iteration 116, loss = 0.60022909
+Iteration 117, loss = 0.59701624
+Iteration 118, loss = 0.59379142
+Iteration 119, loss = 0.59061086
+Iteration 120, loss = 0.58746685
+Iteration 121, loss = 0.58441789
+Iteration 122, loss = 0.58156398
+Iteration 123, loss = 0.57869649
+Iteration 124, loss = 0.57599224
+Iteration 125, loss = 0.57327632
+Iteration 126, loss = 0.57059533
+Iteration 127, loss = 0.56810364
+Iteration 128, loss = 0.56544271
+Iteration 129, loss = 0.56281684
+Iteration 130, loss = 0.56023326
+Iteration 131, loss = 0.55775229
+Iteration 132, loss = 0.55507726
+Iteration 133, loss = 0.55244595
+Iteration 134, loss = 0.54959483
+Iteration 135, loss = 0.54679397
+Iteration 136, loss = 0.54408693
+Iteration 137, loss = 0.54126652
+Iteration 138, loss = 0.53810044
+Iteration 139, loss = 0.53451328
+Iteration 140, loss = 0.53107877
+Iteration 141, loss = 0.52714612
+Iteration 142, loss = 0.52313751
+Iteration 143, loss = 0.51850720
+Iteration 144, loss = 0.51335067
+Iteration 145, loss = 0.50788104
+Iteration 146, loss = 0.50215727
+Iteration 147, loss = 0.49611134
+Iteration 148, loss = 0.48978039
+Iteration 149, loss = 0.48440548
+Iteration 150, loss = 0.47914475
+Iteration 151, loss = 0.47419699
+Iteration 152, loss = 0.46908666
+Iteration 153, loss = 0.46382410
+Iteration 154, loss = 0.45911103
+Iteration 155, loss = 0.45437712
+Iteration 156, loss = 0.44923487
+Iteration 157, loss = 0.44453532
+Iteration 158, loss = 0.43966639
+Iteration 159, loss = 0.43540570
+Iteration 160, loss = 0.43047733
+Iteration 161, loss = 0.42609942
+Iteration 162, loss = 0.42144262
+Iteration 163, loss = 0.41649172
+Iteration 164, loss = 0.41230851
+Iteration 165, loss = 0.40782790
+Iteration 166, loss = 0.40310995
+Iteration 167, loss = 0.39854576
+Iteration 168, loss = 0.39425924
+Iteration 169, loss = 0.38963494
+Iteration 170, loss = 0.38506235
+Iteration 171, loss = 0.38071073
+Iteration 172, loss = 0.37640521
+Iteration 173, loss = 0.37221011
+Iteration 174, loss = 0.36800412
+Iteration 175, loss = 0.36373675
+Iteration 176, loss = 0.35941812
+Iteration 177, loss = 0.35480486
+Iteration 178, loss = 0.35051787
+Iteration 179, loss = 0.34638674
+Iteration 180, loss = 0.34189546
+Iteration 181, loss = 0.33793489
+Iteration 182, loss = 0.33345916
+Iteration 183, loss = 0.32941395
+Iteration 184, loss = 0.32503686
+Iteration 185, loss = 0.32130361
+Iteration 186, loss = 0.31727996
+Iteration 187, loss = 0.31353214
+Iteration 188, loss = 0.30962123
+Iteration 189, loss = 0.30557109
+Iteration 190, loss = 0.30212238
+Iteration 191, loss = 0.29854106
+Iteration 192, loss = 0.29472539
+Iteration 193, loss = 0.29108018
+Iteration 194, loss = 0.28798674
+Iteration 195, loss = 0.28348334
+Iteration 196, loss = 0.28069321
+Iteration 197, loss = 0.27707776
+Iteration 198, loss = 0.27367835
+Iteration 199, loss = 0.27031041
+Iteration 200, loss = 0.26672972
+Iteration 201, loss = 0.26373662
+Iteration 202, loss = 0.26066556
+Iteration 203, loss = 0.25810756
+Iteration 204, loss = 0.25441649
+Iteration 205, loss = 0.25094539
+Iteration 206, loss = 0.24790548
+Iteration 207, loss = 0.24588401
+Iteration 208, loss = 0.24245402
+Iteration 209, loss = 0.24012776
+Iteration 210, loss = 0.23619392
+Iteration 211, loss = 0.23311745
+Iteration 212, loss = 0.23038237
+Iteration 213, loss = 0.22822628
+Iteration 214, loss = 0.22548958
+Iteration 215, loss = 0.22259016
+Iteration 216, loss = 0.22015651
+Iteration 217, loss = 0.21716624
+Iteration 218, loss = 0.21485369
+Iteration 219, loss = 0.21283429
+Iteration 220, loss = 0.20989457
+Iteration 221, loss = 0.20742709
+Iteration 222, loss = 0.20605722
+Iteration 223, loss = 0.20381837
+Iteration 224, loss = 0.20078719
+Iteration 225, loss = 0.19907528
+Iteration 226, loss = 0.19651634
+Iteration 227, loss = 0.19446580
+Iteration 228, loss = 0.19232907
+Iteration 229, loss = 0.19020272
+Iteration 230, loss = 0.18844807
+Iteration 231, loss = 0.18628048
+Iteration 232, loss = 0.18461741
+Iteration 233, loss = 0.18286912
+Iteration 234, loss = 0.18053340
+Iteration 235, loss = 0.17882143
+Iteration 236, loss = 0.17700418
+Iteration 237, loss = 0.17485608
+Iteration 238, loss = 0.17365395
+Iteration 239, loss = 0.17217607
+Iteration 240, loss = 0.17001912
+Iteration 241, loss = 0.16892178
+Iteration 242, loss = 0.16701413
+Iteration 243, loss = 0.16519670
+Iteration 244, loss = 0.16370971
+Iteration 245, loss = 0.16213219
+Iteration 246, loss = 0.16143128
+Iteration 247, loss = 0.15980411
+Iteration 248, loss = 0.15802615
+Iteration 249, loss = 0.15646026
+Iteration 250, loss = 0.15515262
+Iteration 251, loss = 0.15316246
+Iteration 252, loss = 0.15348220
+Iteration 253, loss = 0.15203160
+Iteration 254, loss = 0.15025396
+Iteration 255, loss = 0.14885689
+Iteration 256, loss = 0.14749141
+Iteration 257, loss = 0.14630029
+Iteration 258, loss = 0.14493151
+Iteration 259, loss = 0.14389278
+Iteration 260, loss = 0.14261884
+Iteration 261, loss = 0.14145549
+Iteration 262, loss = 0.14061306
+Iteration 263, loss = 0.13876582
+Iteration 264, loss = 0.13837716
+Iteration 265, loss = 0.13770028
+Iteration 266, loss = 0.13701685
+Iteration 267, loss = 0.13583315
+Iteration 268, loss = 0.13371842
+Iteration 269, loss = 0.13274713
+Iteration 270, loss = 0.13202153
+Iteration 271, loss = 0.13139151
+Iteration 272, loss = 0.12962934
+Iteration 273, loss = 0.12877365
+Iteration 274, loss = 0.12804849
+Iteration 275, loss = 0.12712318
+Iteration 276, loss = 0.12612283
+Iteration 277, loss = 0.12647874
+Iteration 278, loss = 0.12415825
+Iteration 279, loss = 0.12347530
+Iteration 280, loss = 0.12362322
+Iteration 281, loss = 0.12364690
+Iteration 282, loss = 0.12167641
+Iteration 283, loss = 0.12088733
+Iteration 284, loss = 0.11936233
+Iteration 285, loss = 0.11911004
+Iteration 286, loss = 0.11922318
+Iteration 287, loss = 0.11806608
+Iteration 288, loss = 0.11629870
+Iteration 289, loss = 0.11549977
+Iteration 290, loss = 0.11492991
+Iteration 291, loss = 0.11403445
+Iteration 292, loss = 0.11344000
+Iteration 293, loss = 0.11261255
+Iteration 294, loss = 0.11233288
+Iteration 295, loss = 0.11225873
+Iteration 296, loss = 0.11109937
+Iteration 297, loss = 0.10964465
+Iteration 298, loss = 0.10960620
+Iteration 299, loss = 0.10908761
+Iteration 300, loss = 0.10865848
+Iteration 301, loss = 0.10765143
+Iteration 302, loss = 0.10975382
+Iteration 303, loss = 0.10743051
+Iteration 304, loss = 0.10632994
+Iteration 305, loss = 0.10549922
+Iteration 306, loss = 0.10544128
+Iteration 307, loss = 0.10454146
+Iteration 308, loss = 0.10395087
+Iteration 309, loss = 0.10370554
+Iteration 310, loss = 0.10284943
+Iteration 311, loss = 0.10270483
+Iteration 312, loss = 0.10229397
+Iteration 313, loss = 0.10164521
+Iteration 314, loss = 0.10081378
+Iteration 315, loss = 0.10030893
+Iteration 316, loss = 0.10023026
+Iteration 317, loss = 0.10097828
+Iteration 318, loss = 0.10351389
+Iteration 319, loss = 0.10208914
+Iteration 320, loss = 0.09891362
+Iteration 321, loss = 0.09763418
+Iteration 322, loss = 0.09709693
+Iteration 323, loss = 0.09716775
+Iteration 324, loss = 0.09661564
+Iteration 325, loss = 0.09932030
+Iteration 326, loss = 0.09721316
+Iteration 327, loss = 0.09555133
+Iteration 328, loss = 0.09564627
+Iteration 329, loss = 0.09518087
+Iteration 330, loss = 0.09472844
+Iteration 331, loss = 0.09428586
+Iteration 332, loss = 0.09344739
+Iteration 333, loss = 0.09346037
+Iteration 334, loss = 0.09258600
+Iteration 335, loss = 0.09193145
+Iteration 336, loss = 0.09240009
+Iteration 337, loss = 0.09144473
+Iteration 338, loss = 0.09130197
+Iteration 339, loss = 0.09095111
+Iteration 340, loss = 0.09086746
+Iteration 341, loss = 0.09064438
+Iteration 342, loss = 0.08989162
+Iteration 343, loss = 0.08906096
+Iteration 344, loss = 0.08950899
+Iteration 345, loss = 0.09055584
+Iteration 346, loss = 0.08991426
+Iteration 347, loss = 0.08838175
+Iteration 348, loss = 0.08792369
+Iteration 349, loss = 0.08748138
+Iteration 350, loss = 0.08739033
+Iteration 351, loss = 0.08676226
+Iteration 352, loss = 0.08718699
+Iteration 353, loss = 0.08700615
+Iteration 354, loss = 0.08656210
+Iteration 355, loss = 0.08558444
+Iteration 356, loss = 0.08538938
+Iteration 357, loss = 0.08574784
+Iteration 358, loss = 0.08525569
+Iteration 359, loss = 0.08496957
+Iteration 360, loss = 0.08477965
+Iteration 361, loss = 0.08429907
+Iteration 362, loss = 0.08552666
+Iteration 363, loss = 0.08305868
+Iteration 364, loss = 0.08379549
+Iteration 365, loss = 0.08410356
+Iteration 366, loss = 0.08367470
+Iteration 367, loss = 0.08310441
+Iteration 368, loss = 0.08275294
+Iteration 369, loss = 0.08212407
+Iteration 370, loss = 0.08304468
+Iteration 371, loss = 0.08293611
+Iteration 372, loss = 0.08203382
+Iteration 373, loss = 0.08245961
+Iteration 374, loss = 0.08149387
+Iteration 375, loss = 0.08106005
+Iteration 376, loss = 0.08156518
+Iteration 377, loss = 0.08140691
+Iteration 378, loss = 0.08094866
+Iteration 379, loss = 0.08035825
+Iteration 380, loss = 0.08097152
+Iteration 381, loss = 0.08084517
+Iteration 382, loss = 0.08008373
+Iteration 383, loss = 0.07956092
+Iteration 384, loss = 0.07939238
+Iteration 385, loss = 0.07925818
+Iteration 386, loss = 0.07951088
+Iteration 387, loss = 0.07900730
+Iteration 388, loss = 0.07879176
+Iteration 389, loss = 0.07916003
+Iteration 390, loss = 0.07914578
+Iteration 391, loss = 0.07839689
+Iteration 392, loss = 0.07806936
+Iteration 393, loss = 0.07777446
+Iteration 394, loss = 0.07810722
+Iteration 395, loss = 0.07808434
+Iteration 396, loss = 0.07721625
+Iteration 397, loss = 0.07744277
+Iteration 398, loss = 0.07762962
+Iteration 399, loss = 0.07669503
+Iteration 400, loss = 0.07657821
+/opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/sklearn/neural_network/_multilayer_perceptron.py:585: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (400) reached and the optimization hasn't converged yet.
+  % self.max_iter, ConvergenceWarning)
+INFO:absl:MLPClassifier(batch_size=20, hidden_layer_sizes=[8, 8, 8],
+              learning_rate_init=0.0005, max_iter=400, verbose=True)
+INFO:absl:Accuracy: 0.933333
+INFO:absl:Training complete. Model written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/Trainer/model/121/serving_model_dir. ModelRun written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/Trainer/model_run/121
+INFO:absl:Running publisher for Trainer
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Component Trainer is finished.
+INFO:absl:Component Pusher is running.
+INFO:absl:Running driver for Pusher
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Running executor for Pusher
+INFO:absl:Attempting to infer TFX Python dependency for beam
+INFO:absl:Copying all content from install dir /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tfx to temp dir /tmp/tmpzyi4v_8d/build/tfx
+INFO:absl:Generating a temp setup file at /tmp/tmpzyi4v_8d/build/tfx/setup.py
+INFO:absl:Creating temporary sdist package, logs available at /tmp/tmpzyi4v_8d/build/tfx/setup.log
+INFO:absl:Added --extra_package=/tmp/tmpzyi4v_8d/build/tfx/dist/tfx_ephemeral-0.25.0.dev20201028.tar.gz to beam args
+WARNING:absl:Pusher is going to push the model without validation. Consider using Evaluator or InfraValidator in your pipeline.
+INFO:absl:Model version: 1604081241
+INFO:absl:Model written to serving path /home/pmccarthy/iris/serving_model/iris_sklearn_local/1604081241.
+INFO:absl:Model pushed to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/Pusher/pushed_model/122.
+INFO:absl:Running publisher for Pusher
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Component Pusher is finished.
+INFO:absl:Component ExampleValidator is running.
+INFO:absl:Running driver for ExampleValidator
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Running executor for ExampleValidator
+INFO:absl:Attempting to infer TFX Python dependency for beam
+INFO:absl:Copying all content from install dir /opt/conda/envs/tfx_024_iris_sklearn/lib/python3.7/site-packages/tfx to temp dir /tmp/tmp5z_j29gm/build/tfx
+INFO:absl:Generating a temp setup file at /tmp/tmp5z_j29gm/build/tfx/setup.py
+INFO:absl:Creating temporary sdist package, logs available at /tmp/tmp5z_j29gm/build/tfx/setup.log
+INFO:absl:Added --extra_package=/tmp/tmp5z_j29gm/build/tfx/dist/tfx_ephemeral-0.25.0.dev20201028.tar.gz to beam args
+INFO:absl:Validating schema against the computed statistics for split train.
+INFO:absl:Validation complete for split train. Anomalies written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/ExampleValidator/anomalies/123/train.
+INFO:absl:Validating schema against the computed statistics for split eval.
+INFO:absl:Validation complete for split eval. Anomalies written to /home/pmccarthy/tfx/pipelines/iris_sklearn_local/ExampleValidator/anomalies/123/eval.
+INFO:absl:Running publisher for ExampleValidator
+INFO:absl:MetadataStore with DB connection initialized
+INFO:absl:Component ExampleValidator is finished.
